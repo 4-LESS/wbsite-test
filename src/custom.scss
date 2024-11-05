@@ -1,0 +1,42 @@
+$primary-color: #2C3E50;
+$secondary-color: #18BC9C;
+$danger-color: #E74C3C;
+$light-color: #ECF0F1;
+$dark-color: #2C3E50;
+
+@import "~bootstrap/scss/bootstrap";
+
+body {
+  background-color: $light-color;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $dark-color;
+}
+
+.navbar {
+  background-color: $primary-color !important;
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+  color: #fff !important;
+}
+
+.footer {
+  background-color: $primary-color;
+  color: #fff;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background-color: $primary-color;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
