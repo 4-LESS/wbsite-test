@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Form, FormControl, Button } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Form, FormControl, Button } from "react-bootstrap";
 
 function SearchBar({ onSearch }) {
-  const [termino, setTermino] = useState('');
+  const [termino, setTermino] = useState("");
 
   const manejarCambio = (e) => {
     setTermino(e.target.value);
@@ -19,11 +19,13 @@ function SearchBar({ onSearch }) {
         type="search"
         placeholder="Buscar productos..."
         className="me-2"
-        aria-label="Search"
+        aria-label="Buscar"
         value={termino}
         onChange={manejarCambio}
       />
-      <Button variant="outline-light" type="submit">Buscar</Button>
+      <Button variant="primary" type="submit">
+        Buscar
+      </Button>
     </Form>
   );
 }

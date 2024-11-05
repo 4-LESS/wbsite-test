@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Container, Form, Button } from "react-bootstrap";
 
 function Contacto() {
   const [validated, setValidated] = useState(false);
@@ -27,7 +27,11 @@ function Contacto() {
 
         <Form.Group controlId="formEmail">
           <Form.Label>Correo electrónico</Form.Label>
-          <Form.Control required type="email" placeholder="nombre@ejemplo.com" />
+          <Form.Control
+            required
+            type="email"
+            placeholder="nombre@ejemplo.com"
+          />
           <Form.Control.Feedback type="invalid">
             Por favor ingresa un correo electrónico válido.
           </Form.Control.Feedback>
