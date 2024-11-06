@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import { Card, Row, Col, Button, Spinner } from "react-bootstrap";
@@ -10,12 +10,33 @@ function Productos() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showLoadingMessage, setShowLoadingMessage] = useState(false); // Estado para controlar el retraso de 500 ms
 
   const location = useLocation();
+
+  // Función para manejar la búsqueda de productos, memoizada para evitar recreaciones innecesarias
+  const manejarBusqueda = useCallback(
+    (termino) => {
+      if (productos.length > 0) {
+        if (termino) {
+          const filtrados = productos.filter(
+            (producto) =>
+              producto.title &&
+              producto.title.toLowerCase().includes(termino.toLowerCase()),
+          );
+          setProductosFiltrados(filtrados);
+        } else {
+          setProductosFiltrados(productos);
+        }
+      }
+    },
+    [productos],
+  );
 
   // Efecto para obtener los productos al montar el componente
   useEffect(() => {
     obtenerProductos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Efecto para actualizar el término de búsqueda cuando cambia la URL
@@ -28,7 +49,24 @@ function Productos() {
   // Efecto para manejar la búsqueda cada vez que cambia el término de búsqueda o los productos
   useEffect(() => {
     manejarBusqueda(searchTerm);
-  }, [searchTerm, productos]);
+  }, [searchTerm, manejarBusqueda]);
+
+  // Efecto para controlar el retraso de 500 ms antes de mostrar el mensaje de carga
+  useEffect(() => {
+    let timeout;
+    if (isLoading) {
+      // Iniciar un temporizador de 500 ms
+      timeout = setTimeout(() => {
+        setShowLoadingMessage(true);
+      }, 500);
+    } else {
+      // Si la carga ha finalizado, ocultar el mensaje de carga
+      setShowLoadingMessage(false);
+    }
+
+    // Limpiar el temporizador cuando el componente se desmonte o isLoading cambie
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
 
   // Función para obtener los productos desde la API
   const obtenerProductos = async () => {
@@ -46,22 +84,6 @@ function Productos() {
         "Hubo un problema al cargar los productos. Por favor, intenta nuevamente más tarde.",
       );
       setIsLoading(false); // Asegurar que isLoading sea false incluso si hay un error
-    }
-  };
-
-  // Función para manejar la búsqueda de productos
-  const manejarBusqueda = (termino) => {
-    if (productos.length > 0) {
-      if (termino) {
-        const filtrados = productos.filter(
-          (producto) =>
-            producto.title &&
-            producto.title.toLowerCase().includes(termino.toLowerCase()),
-        );
-        setProductosFiltrados(filtrados);
-      } else {
-        setProductosFiltrados(productos);
-      }
     }
   };
 
@@ -88,11 +110,13 @@ function Productos() {
       />
       <Row>
         {isLoading ? (
-          // Mostrar un spinner y mensaje mientras se cargan los productos
-          <div className="text-center w-100 my-5">
-            <Spinner animation="border" role="status" />
-            <p className="mt-3">Buscando productos...</p>
-          </div>
+          showLoadingMessage && (
+            // Mostrar un spinner y mensaje después de 500 ms de carga
+            <div className="text-center w-100 my-5">
+              <Spinner animation="border" role="status" />
+              <p className="mt-3">Buscando productos...</p>
+            </div>
+          )
         ) : error ? (
           // Mostrar mensaje de error si ocurrió un problema al cargar los productos
           <div className="text-center w-100 my-5">
