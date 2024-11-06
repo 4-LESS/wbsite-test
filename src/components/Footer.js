@@ -1,11 +1,22 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
+import React from "react";
+import { Container } from "react-bootstrap";
 
 function Footer() {
   return (
-    <footer className="bg-primary text-white text-center py-3 mt-auto">
+    <footer
+      style={{
+        backgroundColor: "#2954a3",
+        color: "white",
+        textAlign: "center",
+        padding: "1rem 0",
+        marginTop: "auto",
+      }}
+    >
       <Container>
-        <p>&copy; {new Date().getFullYear()} Farmacia XYZ. Todos los derechos reservados.</p>
+        <p>
+          &copy; {new Date().getFullYear()} Farmacia XYZ. Todos los derechos
+          reservados.
+        </p>
       </Container>
     </footer>
   );

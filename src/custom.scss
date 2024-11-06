@@ -1,8 +1,8 @@
-$primary-color: #2C3E50;
-$secondary-color: #18BC9C;
-$danger-color: #E74C3C;
-$light-color: #ECF0F1;
-$dark-color: #2C3E50;
+$primary-color: #2954a3; /* Azul oscuro */
+$secondary-color: #ff7e1b; /* Naranja */
+$light-color: #f8f9fa;
+$text-color: #333;
+$dark-color: #333;
 
 @import "~bootstrap/scss/bootstrap";
 
@@ -15,19 +15,132 @@ h1, h2, h3, h4, h5, h6 {
   color: $dark-color;
 }
 
-.navbar {
-  background-color: $primary-color !important;
+/* Estilo para la primera sección de la barra de navegación */
+.navbar-top {
+  background-color: white;
+  border-bottom: 1px solid #ddd;
 }
 
-.navbar-brand, .navbar-nav .nav-link {
-  color: #fff !important;
+/* Estilo para la segunda sección (separador) */
+.navbar-bottom {
+  background-color: #2954a3; /* Cambia a tu color deseado */
+  color: rgb(255, 255, 255);
+  
+  .nav-link {
+    color: white !important;
+  }
+
+  .nav-link:hover {
+    color: #ffcc00 !important; /* Color de hover opcional */
+  }
 }
 
-.footer {
-  background-color: $primary-color;
+
+.btn-menu {
+  background-color: $secondary-color;
   color: #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+
+
+/* Icono de sucursales */
+.icono-sucursales, .button-sucursales {
+  color: $secondary-color;
+  margin-right: 10px;
+}
+
+.button-sucursales {
+  color: $secondary-color;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Sección de Bienvenida */
+.welcome-section {
+  background-color: $primary-color;
+  color: white;
+  text-align: center;
+  padding: 50px 0;
+
+  h1 {
+    font-family: 'Roboto', sans-serif;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+}
+
+/* Sección de Características */
+.features {
+  background-color: #f3f3f3;
+  padding: 30px 0;
+  text-align: center;
+
+  .feature-item {
+    h3 {
+      color: $primary-color;
+      font-size: 1.2rem;
+    }
+
+    p {
+      color: #666;
+    }
+
+    .feature-icon {
+      color: $primary-color;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+/* Modal de Sucursales */
+.modal-header, .modal-footer {
+  border: none;
+}
+
+.modal-content {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .btn {
+    margin: 5px 0;
+    color: $secondary-color;
+    border-color: $secondary-color;
+    &:hover {
+      background-color: $secondary-color;
+      color: #fff;
+    }
+  }
+}
+
+/* Footer */
+.footer {
+  background-color: #2954a3; // Cambia este color si deseas otro tono
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto;
+}
+
+
+/* Scroll to top button */
 .scroll-to-top {
   position: fixed;
   bottom: 40px;
@@ -38,5 +151,58 @@ h1, h2, h3, h4, h5, h6 {
   padding: 10px;
   border-radius: 50%;
   font-size: 24px;
+}
+
+:root {
+  --secondary-color: #ff7e1b; /* Naranja */
+}
+
+/* Estilo del círculo de menú */
+.menu-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: $secondary-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo de los iconos */
+.text-secondary {
+  color: var(--secondary-color) !important;
+}
+
+/* Estilo para la barra de búsqueda */
+.search-bar .form-control {
+  border-radius: 20px;
+  padding-right: 30px;
+}
+
+.search-icon {
+  color: #ff7e1b; /* Naranja */
+  cursor: pointer;
+  border-radius: 0 20px 20px 0;
+}
+
+/* Estilo para el botón de menú circular */
+.menu-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ff7e1b; /* Naranja */
+  cursor: pointer;
+}
+
+/* Estilo para el icono de lupa dentro de la barra de búsqueda */
+.search-bar .form-control {
+  border-radius: 20px;
+  border-right: none;
+}
+
+.search-icon {
+  color: #ff7e1b; /* Naranja */
+  cursor: pointer;
+  border-radius: 0 20px 20px 0;
 }
 
