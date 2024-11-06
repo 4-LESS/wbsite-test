@@ -1,8 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: "https://fakestoreapi.com",
-  // No añadiremos autenticación por ahora
+  baseURL: '/.netlify/functions/',
 });
 
 export default api;

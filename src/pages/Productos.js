@@ -13,11 +13,14 @@ function Productos() {
 
   const obtenerProductos = async () => {
     try {
-      const response = await api.get("products");
-      setProductos(response.data);
-      setProductosFiltrados(response.data);
+      const response = await api.get('productos');
+      const productos = Array.isArray(response.data) ? response.data : []; // Verificar si es un array
+      console.log(response.data); 
+      setProductos(productos);
+      setProductosFiltrados(productos);
     } catch (error) {
-      console.error("Error al obtener los productos:", error);
+      console.error('Error al obtener los productos:', error);
+      setProductosFiltrados([]); // Asegurarse de que siempre sea un array en caso de error
     }
   };
 
