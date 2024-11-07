@@ -1,11 +1,18 @@
+// src/pages/Inicio.js
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPills, faUserMd, faTruck } from "@fortawesome/free-solid-svg-icons";
+import Anuncios from "../components/Anuncios"; // Importa el componente Anuncios
 
 function Inicio() {
   return (
     <>
+      {/* Carrusel de Anuncios */}
+      <Container className="my-5">
+        <Anuncios /> {/* Inserta el componente del carrusel aquí */}
+      </Container>
+
       {/* Sección de Bienvenida y Características */}
       <div className="bg-primary text-white text-center py-5">
         <Container>
