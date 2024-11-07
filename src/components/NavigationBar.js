@@ -15,34 +15,7 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "../components/SearchBar";
-
-function ModalSucursales({ show, onHide }) {
-  return (
-    <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Sucursales</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="text-center">
-        <Button
-          variant="outline-primary"
-          className="mb-3"
-          as={Link}
-          to="/sucursal1"
-        >
-          Farmacia 1
-        </Button>
-        <Button
-          variant="outline-primary"
-          className="mb-3"
-          as={Link}
-          to="/sucursal2"
-        >
-          Farmacia 2
-        </Button>
-      </Modal.Body>
-    </Modal>
-  );
-}
+import ModalSucursales from './ModalSucursales';
 
 function NavigationBar() {
   const [showSucursales, setShowSucursales] = useState(false);
@@ -68,7 +41,7 @@ function NavigationBar() {
               <img
                 src={require("../logo_farmahorro.png")}
                 alt="FarmAhorro Logo"
-                style={{ width: "80px", marginRight: "20px" }}
+                style={{ width: "150px", marginRight: "30px" }}
               />
             </Link>
 

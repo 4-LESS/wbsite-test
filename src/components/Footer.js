@@ -14,7 +14,7 @@ function Footer() {
     >
       <Container>
         <p>
-          &copy; {new Date().getFullYear()} Farmacia XYZ. Todos los derechos
+          &copy; {new Date().getFullYear()} FarmAhorro. Todos los derechos
           reservados.
         </p>
       </Container>

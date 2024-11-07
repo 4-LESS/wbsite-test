@@ -1,8 +1,12 @@
-import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Modal, Button } from 'react-bootstrap';
 
 function ModalSucursales({ show, onHide }) {
+  const handleRedirect = (sectionId) => {
+    onHide(); // Cierra el modal primero
+    window.location.assign(`/sobre-nosotros#${sectionId}`); // Cambia la URL a la sección deseada
+  };
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -12,16 +16,14 @@ function ModalSucursales({ show, onHide }) {
         <Button
           variant="outline-primary"
           className="mb-3"
-          as={Link}
-          to="/sucursal1"
+          onClick={() => handleRedirect('farmacia1')}
         >
           Farmacia 1
         </Button>
         <Button
           variant="outline-primary"
           className="mb-3"
-          as={Link}
-          to="/sucursal2"
+          onClick={() => handleRedirect('farmacia2')}
         >
           Farmacia 2
         </Button>

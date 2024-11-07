@@ -15,7 +15,7 @@ function Inicio() {
                 className="animate__animated animate__fadeInDown"
                 style={{ fontFamily: "Roboto, sans-serif" }}
               >
-                Bienvenido a FarmaAhorro
+                Bienvenido a FarmAhorro
               </h1>
               <p
                 className="lead animate__animated animate__fadeInUp"
