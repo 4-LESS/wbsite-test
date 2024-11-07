@@ -1,3 +1,5 @@
+// src/pages/Productos.js
+
 import React, { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
@@ -7,7 +9,7 @@ function Productos() {
   // Estados para los productos, productos filtrados, término de búsqueda, carga y errores
   const [productos, setProductos] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showLoadingMessage, setShowLoadingMessage] = useState(false); // Estado para controlar el retraso de 500 ms
@@ -15,23 +17,18 @@ function Productos() {
   const location = useLocation();
 
   // Función para manejar la búsqueda de productos, memoizada para evitar recreaciones innecesarias
-  const manejarBusqueda = useCallback(
-    (termino) => {
-      if (productos.length > 0) {
-        if (termino) {
-          const filtrados = productos.filter(
-            (producto) =>
-              producto.title &&
-              producto.title.toLowerCase().includes(termino.toLowerCase()),
-          );
-          setProductosFiltrados(filtrados);
-        } else {
-          setProductosFiltrados(productos);
-        }
+  const manejarBusqueda = useCallback((termino) => {
+    if (productos.length > 0) {
+      if (termino) {
+        const filtrados = productos.filter((producto) =>
+          producto.name && producto.name.toLowerCase().includes(termino.toLowerCase())
+        );
+        setProductosFiltrados(filtrados);
+      } else {
+        setProductosFiltrados(productos);
       }
-    },
-    [productos],
-  );
+    }
+  }, [productos]);
 
   // Efecto para obtener los productos al montar el componente
   useEffect(() => {
@@ -42,7 +39,7 @@ function Productos() {
   // Efecto para actualizar el término de búsqueda cuando cambia la URL
   useEffect(() => {
     const query = new URLSearchParams(location.search);
-    const searchTermFromURL = query.get("search") || "";
+    const searchTermFromURL = query.get('search') || '';
     setSearchTerm(searchTermFromURL);
   }, [location.search]);
 
@@ -68,21 +65,33 @@ function Productos() {
     return () => clearTimeout(timeout);
   }, [isLoading]);
 
-  // Función para obtener los productos desde la API
+  // Función para obtener los productos directamente desde el proxy local
   const obtenerProductos = async () => {
     try {
-      const response = await fetch("https://fakestoreapi.com/products");
+      // Construir la URL con los parámetros de búsqueda si existen
+      let url = `/api`;
+      if (searchTerm) {
+        url += `?search=${encodeURIComponent(searchTerm)}`;
+      }
+
+      console.log("Solicitando a la URL:", url);
+
+      const response = await fetch(url, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
       if (!response.ok) {
         throw new Error("Error en la respuesta de la red");
       }
+
       const productos = await response.json();
       setProductos(productos);
       setIsLoading(false); // Indicar que la carga ha finalizado
     } catch (error) {
       console.error("Error al obtener los productos:", error);
-      setError(
-        "Hubo un problema al cargar los productos. Por favor, intenta nuevamente más tarde.",
-      );
+      setError("Hubo un problema al cargar los productos. Por favor, intenta nuevamente más tarde.");
       setIsLoading(false); // Asegurar que isLoading sea false incluso si hay un error
     }
   };
@@ -96,15 +105,11 @@ function Productos() {
           // Actualizar el parámetro de búsqueda en la URL sin recargar la página
           const queryParams = new URLSearchParams(location.search);
           if (termino) {
-            queryParams.set("search", termino);
+            queryParams.set('search', termino);
           } else {
-            queryParams.delete("search");
+            queryParams.delete('search');
           }
-          window.history.replaceState(
-            null,
-            "",
-            `${location.pathname}?${queryParams.toString()}`,
-          );
+          window.history.replaceState(null, '', `${location.pathname}?${queryParams.toString()}`);
         }}
         defaultValue={searchTerm}
       />
@@ -132,14 +137,14 @@ function Productos() {
           productosFiltrados.map((producto) => (
             <Col key={producto.id} sm={12} md={6} lg={4} className="mb-4">
               <Card className="h-100">
-                <Card.Img
-                  variant="top"
-                  src={producto.image}
-                  alt={producto.title}
-                />
+                {/* Asegúrate de que el array de imágenes exista y tenga al menos una imagen */}
+                {producto.images && producto.images.length > 0 && (
+                  <Card.Img variant="top" src={producto.images[0].src} alt={producto.name} />
+                )}
                 <Card.Body>
-                  <Card.Title>{producto.title}</Card.Title>
-                  <Card.Text>{producto.description}</Card.Text>
+                  <Card.Title>{producto.name}</Card.Title>
+                  {/* Utilizar dangerouslySetInnerHTML solo si confías en el contenido HTML */}
+                  <Card.Text dangerouslySetInnerHTML={{ __html: producto.description }} />
                   <Card.Text>Precio: ${producto.price}</Card.Text>
                   <Button variant="primary">Ver detalles</Button>
                 </Card.Body>
