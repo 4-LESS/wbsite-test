@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import Papa from "papaparse";
-import { useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
-import ProductFilters from "../components/ProductFilters"; // Importando el componente de filtros
+import ProductFilters from "../components/ProductFilters";
 import { Card, Row, Col, Button, Spinner, Pagination, Container } from "react-bootstrap";
-
-const ITEMS_PER_PAGE = 12;
 
 // Función para generar una URL de imagen placeholder única basada en el ID del producto
 const getPlaceholderImage = (id) => {
@@ -13,24 +10,47 @@ const getPlaceholderImage = (id) => {
   return `https://picsum.photos/seed/${id}/300/200`;
 };
 
+const ITEMS_PER_PAGE = 12;
+
 const Productos = () => {
   const [productos, setProductos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
   // Estados para filtros
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedLinea, setSelectedLinea] = useState(null);
   const [selectedGrupo, setSelectedGrupo] = useState(null);
 
-  // Obtener el término de búsqueda desde la URL
-  const searchTerm = useMemo(() => {
-    const params = new URLSearchParams(location.search);
-    return params.get("search") || "";
-  }, [location.search]);
+  // (Opcional) Persistencia del estado usando localStorage
+  useEffect(() => {
+    const savedSearchTerm = localStorage.getItem("searchTerm");
+    const savedSelectedLinea = localStorage.getItem("selectedLinea");
+    const savedSelectedGrupo = localStorage.getItem("selectedGrupo");
+    const savedCurrentPage = localStorage.getItem("currentPage");
+
+    if (savedSearchTerm) setSearchTerm(savedSearchTerm);
+    if (savedSelectedLinea) setSelectedLinea(JSON.parse(savedSelectedLinea));
+    if (savedSelectedGrupo) setSelectedGrupo(JSON.parse(savedSelectedGrupo));
+    if (savedCurrentPage) setCurrentPage(Number(savedCurrentPage));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("searchTerm", searchTerm);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    localStorage.setItem("selectedLinea", JSON.stringify(selectedLinea));
+  }, [selectedLinea]);
+
+  useEffect(() => {
+    localStorage.setItem("selectedGrupo", JSON.stringify(selectedGrupo));
+  }, [selectedGrupo]);
+
+  useEffect(() => {
+    localStorage.setItem("currentPage", currentPage);
+  }, [currentPage]);
 
   // Filtrar productos basados en searchTerm, selectedLinea y selectedGrupo
   const filteredProductos = useMemo(() => {
@@ -97,11 +117,9 @@ const Productos = () => {
   }, [loadProductos]);
 
   // Manejar búsqueda
-  const handleSearch = termino => {
+  const handleSearch = (termino) => {
     setCurrentPage(1);
-    const params = new URLSearchParams(location.search);
-    termino ? params.set("search", termino) : params.delete("search");
-    navigate({ search: params.toString() }, { replace: true });
+    setSearchTerm(termino);
   };
 
   // Extraer opciones únicas de LINEA
@@ -126,32 +144,15 @@ const Productos = () => {
   }, [productos, selectedLinea]);
 
   // Manejar cambios en los filtros
-  const handleLineaChange = selected => {
+  const handleLineaChange = (selected) => {
     setSelectedLinea(selected);
     setSelectedGrupo(null); // Resetear GRUPO al cambiar LINEA
     setCurrentPage(1);
-
-    const params = new URLSearchParams(location.search);
-    if (selected) {
-      params.set("linea", selected.value);
-    } else {
-      params.delete("linea");
-    }
-    params.delete("grupo"); // Resetear grupo cuando cambia linea
-    navigate({ search: params.toString() }, { replace: true });
   };
 
-  const handleGrupoChange = selected => {
+  const handleGrupoChange = (selected) => {
     setSelectedGrupo(selected);
     setCurrentPage(1);
-
-    const params = new URLSearchParams(location.search);
-    if (selected) {
-      params.set("grupo", selected.value);
-    } else {
-      params.delete("grupo");
-    }
-    navigate({ search: params.toString() }, { replace: true });
   };
 
   // Paginación
@@ -242,9 +243,8 @@ const Productos = () => {
             onClick={() => {
               setSelectedLinea(null);
               setSelectedGrupo(null);
-              handleSearch("");
+              setSearchTerm("");
               setCurrentPage(1);
-              navigate({ search: "" }, { replace: true });
             }}
           >
             Resetear Filtros
