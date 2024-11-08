@@ -1,17 +1,50 @@
 $primary-color: #2954a3; /* Azul oscuro */
 $secondary-color: #ff7e1b; /* Naranja */
 $light-color: #f8f9fa;
-$text-color: #333;
 $dark-color: #333;
 
 @import "~bootstrap/scss/bootstrap";
+
+/* Sección de Bienvenida (modificación) */
+.bg-primary {
+  background: linear-gradient($primary-color,#2954a3); /* Usando color sólido */
+  color: white !important;
+  text-align: center;
+  padding: 4rem 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el título y subtítulo en la sección de bienvenida */
+.bg-primary h1 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 2.8rem;
+  color: white !important; /* Color blanco asegurado para el h1 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra de texto suave */
+  transition: transform 0.3s ease, font-size 0.3s ease; /* Animación de zoom y cambio de tamaño en hover */
+}
+
+.bg-primary h1:hover {
+  transform: scale(1.05); /* Zoom suave en hover */
+  font-size: 2.9rem; /* Cambio sutil de tamaño */
+}
+
+.bg-primary p {
+  font-size: 1.3rem;
+  color: white !important; /* Color blanco asegurado para el subtítulo */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* Sombra de texto en el subtítulo */
+  transition: font-size 0.3s ease; /* Transición suave en el tamaño */
+}
+
+.bg-primary p:hover {
+  font-size: 1.35rem; /* Efecto de hover en el subtítulo */
+}
 
 body {
   background-color: $light-color;
   font-family: 'Roboto', sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h2, h3, h4, h5, h6 {
   color: $dark-color;
 }
 
@@ -61,22 +94,6 @@ h1, h2, h3, h4, h5, h6 {
 
   &:hover {
     text-decoration: underline;
-  }
-}
-
-/* Sección de Bienvenida */
-.welcome-section {
-  background-color: $primary-color;
-  color: white;
-  text-align: center;
-  padding: 50px 0;
-
-  h1 {
-    font-family: 'Roboto', sans-serif;
-  }
-
-  p {
-    font-size: 1.2rem;
   }
 }
 
@@ -157,7 +174,6 @@ h1, h2, h3, h4, h5, h6 {
   --secondary-color: #ff7e1b; /* Naranja */
 }
 
-/* Estilo del círculo de menú */
 .menu-circle {
   width: 40px;
   height: 40px;
@@ -166,7 +182,14 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
+
+/* Estilo de los iconos */
+.text-secondary {
+  color: $secondary-color !important; /* Usando variable SCSS */
+}
+
 
 /* Estilo de los iconos */
 .text-secondary {
@@ -177,21 +200,13 @@ h1, h2, h3, h4, h5, h6 {
 .search-bar .form-control {
   border-radius: 20px;
   padding-right: 30px;
+  border-right: none;
 }
 
 .search-icon {
   color: #ff7e1b; /* Naranja */
   cursor: pointer;
   border-radius: 0 20px 20px 0;
-}
-
-/* Estilo para el botón de menú circular */
-.menu-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #ff7e1b; /* Naranja */
-  cursor: pointer;
 }
 
 /* Estilo para el icono de lupa dentro de la barra de búsqueda */
@@ -201,7 +216,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .search-icon {
-  color: #ff7e1b; /* Naranja */
+  color: $secondary-color;
   cursor: pointer;
   border-radius: 0 20px 20px 0;
 }
