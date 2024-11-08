@@ -1,11 +1,11 @@
 const axios = require('axios');
-const https = require('https'); // Importar el módulo https
+const https = require('https');
 
 exports.handler = async function (event, context) {
   try {
     const apiKey = process.env.API_KEY;
     const apiSecret = process.env.API_SECRET;
-    const endpoint = process.env.API_ENDPOINT; // 'https://admin-farmahorro.freesite.online/wp-json/wc/v3/products'
+    const endpoint = process.env.API_ENDPOINT;
 
     if (!apiKey || !apiSecret || !endpoint) {
       console.error('Faltan las variables de entorno necesarias.');
@@ -15,36 +15,33 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // Obtener parámetros de búsqueda si existen
+    // Leer parámetros de búsqueda de la URL
     const { search } = event.queryStringParameters || {};
     let url = `${endpoint}?consumer_key=${apiKey}&consumer_secret=${apiSecret}`;
-
+    
     if (search) {
-      // Suponiendo que la API de WooCommerce soporta el parámetro 'search'
       url += `&search=${encodeURIComponent(search)}`;
     }
 
     console.log("Solicitando a la URL:", url);
 
-    // Crear un agente HTTPS que ignore la verificación SSL
+    // Crear un https.Agent configurado para ignorar los errores SSL
     const httpsAgent = new https.Agent({
-      rejectUnauthorized: false, // Ignorar la verificación SSL
+      rejectUnauthorized: false, // Ignora la verificación SSL
     });
 
+    // Realizar la solicitud a la API utilizando axios con el httpsAgent
     const response = await axios.get(url, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      httpsAgent, // Añadir el agente HTTPS personalizado
-      timeout: 10000, // Opcional: Añadir un timeout de 10 segundos
+      headers: { 'Content-Type': 'application/json' },
+      httpsAgent, // Incluir el httpsAgent en la solicitud
+      timeout: 10000, // Opcional: Tiempo de espera de 10 segundos
     });
 
-    console.log("Respuesta de la API:", response.data);
-
+    // Retornar la respuesta con los productos
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*', // Configurar CORS según tus necesidades
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
       },
       body: JSON.stringify(response.data),
@@ -52,27 +49,24 @@ exports.handler = async function (event, context) {
   } catch (error) {
     console.error('Error al obtener los productos:', error.message);
 
-    // Determinar el tipo de error
-    let errorMessage = 'Error al obtener los productos. Por favor, intenta nuevamente más tarde.';
+    // Determinar el mensaje de error basado en el tipo de error
+    let errorMessage = 'Error al obtener los productos.';
     if (error.response) {
-      // La solicitud se realizó y el servidor respondió con un estado diferente de 2xx
-      errorMessage = `Error de la API: ${error.response.status} ${error.response.statusText}`;
+      errorMessage = `Error de la API: ${error.response.status} ${error.response.statusText} - ${error.response.data}`;
     } else if (error.request) {
-      // La solicitud se realizó pero no se recibió respuesta
       errorMessage = 'No se recibió respuesta del servidor de la API.';
     } else {
-      // Algo sucedió al configurar la solicitud
       errorMessage = 'Error al configurar la solicitud a la API.';
     }
 
+    // Retornar el mensaje de error
     return {
       statusCode: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*', // Configurar CORS según tus necesidades
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
       },
       body: JSON.stringify({ error: errorMessage }),
     };
   }
 };
-
