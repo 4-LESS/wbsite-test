@@ -1,10 +1,14 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 function ModalSucursales({ show, onHide }) {
+  const navigate = useNavigate();
+
   const handleRedirect = (sectionId) => {
     onHide(); // Cierra el modal primero
-    window.location.assign(`/sobre-nosotros#${sectionId}`); // Cambia la URL a la sección deseada
+    navigate('/sobre-nosotros', { state: { sectionId } }); // Redirige con estado
   };
 
   return (
@@ -31,5 +35,10 @@ function ModalSucursales({ show, onHide }) {
     </Modal>
   );
 }
+
+ModalSucursales.propTypes = {
+  show: PropTypes.bool.isRequired,
+  onHide: PropTypes.func.isRequired,
+};
 
 export default ModalSucursales;

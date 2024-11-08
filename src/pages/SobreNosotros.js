@@ -1,20 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Container } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
 
 function SobreNosotros() {
-  const location = useLocation();
-
-  useEffect(() => {
-    // Detecta el hash en la URL y desplaza la vista a esa sección
-    if (location.hash) {
-      const element = document.getElementById(location.hash.replace('#', ''));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  }, [location]);
-
   return (
     <Container className="my-4">
       <h1>Sobre Nosotros</h1>
