@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# Sitio Web FarmAhorro
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este es un proyecto web diseñado para gestionar y visualizar productos, horarios de sucursales y otras características de la farmacia **FarmAhorro**. La aplicación permite a los usuarios buscar productos, filtrar por categorías, ver sucursales, y acceder a información de contacto.
 
-## Available Scripts
+## Características
 
-In the project directory, you can run:
+- **Página de Inicio**: Con carrusel de anuncios, bienvenida y características de los servicios de la farmacia.
+- **Productos**: Listado de productos con búsqueda y filtrado dinámico por línea y grupo, con paginación.
+- **Sucursales**: Información sobre dos ubicaciones de FarmAhorro, incluyendo horarios de atención.
+- **Contacto**: Formulario de contacto con validación y un mapa de ubicación integrado.
 
-### `npm start`
+## Requisitos Previos
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Node.js** y **npm**: Asegúrate de tener ambos instalados. Puedes descargarlos desde [https://nodejs.org/](https://nodejs.org/).
+- **Git**: Para clonar el repositorio.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Instalación
 
-### `npm test`
+Sigue estos pasos para instalar el proyecto en tu máquina local:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clona el repositorio**:
+   ```bash
+   git clone https://github.com/4-LESS/INGESO
+2. **Navega al directorio del proyecto**:
+   ```bash
+    cd INGESO
+3. **Instala las dependencias**:
+   ```bash
+   npm install
+4. **Inicia la aplicación en modo de desarrollo**
+   ```bash
+   npm start
+Esto abrirá la aplicación en http://localhost:3000 en tu navegador.
 
-### `npm run build`
+## Estructura
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **src/components**: Componentes reutilizables como la barra de navegación, footer, barra de búsqueda, filtros de productos, etc.
+- **src/pages**: Contiene las páginas principales como Inicio, Productos, SobreNosotros, y Contacto.
+- **src/hooks**: Hooks personalizados, como useProductos para cargar el inventario desde un CSV y useFilteredProducts para manejar los filtros de productos.
+- **public/data**: Ubicación del archivo inventario.csv que contiene los datos del inventario de productos.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Notas de Desarrollo
+### Configuración de Axios
+El archivo src/api.js contiene la configuración de Axios, aunque actualmente no está en uso debido a limitaciones de la API.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Archivo CSV de Inventario
+Para cargar productos, el archivo inventario.csv debe estar en public/data y debe incluir los campos DETALLE, LINEA, GRUPO, STOCK, PRECIO, y CODIGO para que se muestren correctamente.
 
-### `npm run eject`
+### Estilos y Animaciones
+El proyecto utiliza animaciones de animate.css y componentes estilizados con React-Bootstrap y clases personalizadas en App.css.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# :P

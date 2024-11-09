@@ -1,4 +1,8 @@
 // src/hooks/useFilteredProducts.js
+
+// Hook personalizado para gestionar y aplicar filtros de productos basados en parámetros de URL y valores seleccionados.
+// Incluye filtros de búsqueda, línea y grupo, y actualiza la URL para reflejar el estado de los filtros.
+
 import { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -6,12 +10,12 @@ const useFilteredProducts = (productos) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Estados para los filtros
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLinea, setSelectedLinea] = useState(null);
-  const [selectedGrupo, setSelectedGrupo] = useState(null);
+  // Estados para almacenar los valores de los filtros
+  const [searchTerm, setSearchTerm] = useState(""); // Almacena el término de búsqueda
+  const [selectedLinea, setSelectedLinea] = useState(null); // Almacena la línea seleccionada
+  const [selectedGrupo, setSelectedGrupo] = useState(null); // Almacena el grupo seleccionado
 
-  // Parsear los parámetros de la URL al montar el hook
+  // Inicializa los filtros basados en los parámetros de URL al montar el hook
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get("search") || "";
@@ -29,7 +33,7 @@ const useFilteredProducts = (productos) => {
     }
   }, [location.search]);
 
-  // Generar opciones únicas para LINEA
+  // Genera opciones únicas para el filtro de línea basadas en los productos disponibles
   const lineaOptions = useMemo(() => {
     const uniqueLineas = Array.from(new Set(productos.map(p => p.LINEA)));
     return uniqueLineas.map(linea => ({
@@ -38,7 +42,7 @@ const useFilteredProducts = (productos) => {
     }));
   }, [productos]);
 
-  // Generar opciones únicas para GRUPO basado en LINEA seleccionada
+  // Genera opciones únicas para el filtro de grupo basadas en la línea seleccionada
   const grupoOptions = useMemo(() => {
     if (selectedLinea) {
       const filtered = productos.filter(p => p.LINEA === selectedLinea.value);
@@ -51,7 +55,7 @@ const useFilteredProducts = (productos) => {
     return [];
   }, [selectedLinea, productos]);
 
-  // Filtrar productos basado en searchTerm, LINEA y GRUPO
+  // Filtra los productos en base al término de búsqueda, línea y grupo seleccionados
   const filteredProducts = useMemo(() => {
     return productos.filter(product => {
       const matchesSearch = product.nombre.toLowerCase().includes(searchTerm.toLowerCase());
@@ -61,7 +65,7 @@ const useFilteredProducts = (productos) => {
     });
   }, [productos, searchTerm, selectedLinea, selectedGrupo]);
 
-  // Handlers para actualizar los filtros y la URL
+  // Actualiza el término de búsqueda y la URL
   const handleSearchSubmit = (term) => {
     setSearchTerm(term);
     const params = new URLSearchParams(location.search);
@@ -73,9 +77,10 @@ const useFilteredProducts = (productos) => {
     navigate(`/productos?${params.toString()}`);
   };
 
+  // Actualiza la línea seleccionada y resetea el grupo si es necesario
   const handleLineaChange = (selected) => {
     setSelectedLinea(selected);
-    setSelectedGrupo(null); // Resetear GRUPO cuando cambia LINEA
+    setSelectedGrupo(null); // Restablece el grupo al cambiar la línea
 
     const params = new URLSearchParams(location.search);
     if (selected) {
@@ -83,10 +88,11 @@ const useFilteredProducts = (productos) => {
     } else {
       params.delete("linea");
     }
-    params.delete("grupo"); // Siempre eliminar GRUPO al cambiar LINEA
+    params.delete("grupo"); // Elimina siempre el grupo al cambiar la línea
     navigate(`/productos?${params.toString()}`);
   };
 
+  // Actualiza el grupo seleccionado y la URL
   const handleGrupoChange = (selected) => {
     setSelectedGrupo(selected);
     const params = new URLSearchParams(location.search);
@@ -98,6 +104,7 @@ const useFilteredProducts = (productos) => {
     navigate(`/productos?${params.toString()}`);
   };
 
+  // Restablece todos los filtros y actualiza la URL
   const resetFilters = () => {
     setSearchTerm("");
     setSelectedLinea(null);
@@ -105,6 +112,7 @@ const useFilteredProducts = (productos) => {
     navigate(`/productos`);
   };
 
+  // Retorna los productos filtrados, opciones de filtro y handlers para cambiar los filtros
   return {
     filteredProducts,
     searchTerm,
@@ -120,4 +128,3 @@ const useFilteredProducts = (productos) => {
 };
 
 export default useFilteredProducts;
-

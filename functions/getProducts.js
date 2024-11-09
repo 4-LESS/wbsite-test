@@ -1,15 +1,20 @@
-/* Esta funcion no está siendo usada por conflictos en la API que
-aun no se solucionan*/
+// functions/getProducts.js
+
+// Función para manejar solicitudes de una API externa con autenticación y configuración SSL.
+// Actualmente, esta función no está siendo usada debido a conflictos en la API que aún no se han solucionado.
+// La función utiliza axios para realizar una solicitud GET a la API especificada en el archivo de configuración.
 
 const axios = require('axios');
 const https = require('https');
 
 exports.handler = async function (event, context) {
   try {
+    // Variables de entorno para autenticación y configuración de la API
     const apiKey = process.env.API_KEY;
     const apiSecret = process.env.API_SECRET;
     const endpoint = process.env.API_ENDPOINT;
 
+    // Verifica que las variables de entorno necesarias estén presentes
     if (!apiKey || !apiSecret || !endpoint) {
       console.error('Faltan las variables de entorno necesarias.');
       return {
@@ -18,29 +23,30 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // Leer parámetros de búsqueda de la URL
+    // Leer parámetros de búsqueda de la URL si están disponibles
     const { search } = event.queryStringParameters || {};
     let url = `${endpoint}?consumer_key=${apiKey}&consumer_secret=${apiSecret}`;
     
+    // Añadir parámetro de búsqueda a la URL si fue provisto en la solicitud
     if (search) {
       url += `&search=${encodeURIComponent(search)}`;
     }
 
     console.log("Solicitando a la URL:", url);
 
-    // Crear un https.Agent configurado para ignorar los errores SSL
+    // Configura un agente HTTPS para ignorar errores de verificación SSL
     const httpsAgent = new https.Agent({
       rejectUnauthorized: false, // Ignora la verificación SSL
     });
 
-    // Realizar la solicitud a la API utilizando axios con el httpsAgent
+    // Realizar la solicitud GET a la API utilizando axios
     const response = await axios.get(url, {
       headers: { 'Content-Type': 'application/json' },
-      httpsAgent, // Incluir el httpsAgent en la solicitud
+      httpsAgent, // Incluir el httpsAgent en la solicitud para omitir la verificación SSL
       timeout: 10000, // Opcional: Tiempo de espera de 10 segundos
     });
 
-    // Retornar la respuesta con los productos
+    // Responde con los datos obtenidos de la API, incluyendo configuración CORS
     return {
       statusCode: 200,
       headers: {
@@ -50,9 +56,10 @@ exports.handler = async function (event, context) {
       body: JSON.stringify(response.data),
     };
   } catch (error) {
+    // Log de error para el seguimiento en caso de que ocurra un problema
     console.error('Error al obtener los productos:', error.message);
 
-    // Determinar el mensaje de error basado en el tipo de error
+    // Determina el mensaje de error basado en el tipo de error
     let errorMessage = 'Error al obtener los productos.';
     if (error.response) {
       errorMessage = `Error de la API: ${error.response.status} ${error.response.statusText} - ${error.response.data}`;
@@ -62,7 +69,7 @@ exports.handler = async function (event, context) {
       errorMessage = 'Error al configurar la solicitud a la API.';
     }
 
-    // Retornar el mensaje de error
+    // Responde con el mensaje de error y configura CORS
     return {
       statusCode: 500,
       headers: {

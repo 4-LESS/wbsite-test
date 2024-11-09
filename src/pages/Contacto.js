@@ -1,3 +1,8 @@
+// src/pages/Contacto.js
+
+// Componente de formulario de contacto que permite a los usuarios enviar su nombre, correo electrónico y un mensaje.
+// Incluye validación de formulario y un iframe para mostrar la ubicación en Google Maps.
+
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 
@@ -52,14 +57,16 @@ function Contacto() {
 
       <div className="mt-5">
         <h2>Nuestra Ubicación</h2>
+        {/* Iframe de Google Maps para mostrar la ubicación */}
         <iframe
           title="mapa"
-          src="https://www.google.com/maps/embed?pb=!1m18... (tu enlace de Google Maps)"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15139.062095199743!2d-70.31022011284178!3d-18.448952299999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915aa902546dba17%3A0xf9869fb3c39f89a5!2sFarmacia%20FarmAhorro!5e0!3m2!1ses!2scl!4v1731183974290!5m2!1ses!2scl"
           width="100%"
           height="450"
           style={{ border: 0 }}
           allowFullScreen=""
           loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
         ></iframe>
       </div>
     </Container>
