@@ -5,17 +5,17 @@ import { Carousel } from 'react-bootstrap';
 function Anuncios() {
   const novedades = [
     {
-      src: require('../assets/source1.webp'), // Reemplaza con la ruta de la imagen
+      src: require('../assets/images/source1.webp'), // Reemplaza con la ruta de la imagen
       alt: 'Novedad 1',
       caption: '',
     },
     {
-      src: require('../assets/source2.webp'), // Otra imagen en formato .webp
+      src: require('../assets/images/source2.webp'), // Otra imagen en formato .webp
       alt: 'Novedad 2',
       caption: '',
     },
     {
-      src: require('../assets/source3.webp'),
+      src: require('../assets/images/source3.webp'),
       alt: 'Novedad 3',
       caption: '',
     },

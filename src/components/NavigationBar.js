@@ -37,7 +37,7 @@ function NavigationBar() {
             {/* Logo con tamaño ajustado y espaciado */}
             <Link to="/">
               <img
-                src={require("../logo_farmahorro.png")}
+                src={require("../assets/images/logo_farmahorro.png")}
                 alt="FarmAhorro Logo"
                 style={{ width: "150px", marginRight: "30px" }}
               />
