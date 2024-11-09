@@ -30,6 +30,11 @@ Sigue estos pasos para instalar el proyecto en tu máquina local:
 4. **Inicia la aplicación en modo de desarrollo**
    ```bash
    npm start
+   ```
+   Tambien se puede iniciar usando las funciones de Netlify
+   ```bash
+   npm start
+   ```
 Esto abrirá la aplicación en http://localhost:3000 en tu navegador.
 
 ## Estructura
