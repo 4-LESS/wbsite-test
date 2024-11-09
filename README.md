@@ -33,7 +33,7 @@ Sigue estos pasos para instalar el proyecto en tu máquina local:
    ```
    Tambien se puede iniciar usando las funciones de Netlify
    ```bash
-   npm start
+   netlify dev
    ```
 Esto abrirá la aplicación en http://localhost:3000 en tu navegador.
 
