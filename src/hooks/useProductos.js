@@ -6,61 +6,84 @@
 import { useState, useEffect, useCallback } from "react";
 import Papa from "papaparse";
 import { getPlaceholderImage } from "../utils/helpers";
+import { categoryMapping } from "../data/categoryMapping"; // Importa el mapeo de categorías
 
 export const useProductos = () => {
-  const [productos, setProductos] = useState([]); // Estado para almacenar los productos cargados
-  const [isLoading, setIsLoading] = useState(true); // Estado para indicar si la carga está en progreso
-  const [error, setError] = useState(null); // Estado para almacenar mensajes de error si ocurre alguno
+  const [productos, setProductos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Función para cargar y procesar el archivo CSV de productos
+  // Función para mapear las categorías antiguas a las nuevas
+  const mapCategorias = (producto) => {
+    const findCategory = (mapping, linea, grupo) => {
+      for (const [key, value] of Object.entries(mapping)) {
+        if (value.codes && value.codes.includes(producto.CODIGO)) {
+          return key;
+        }
+        if (value.lineas && value.lineas.includes(linea)) {
+          return key;
+        }
+        if (value.grupos && value.grupos.includes(grupo)) {
+          return key;
+        }
+        if (value.subcategories) {
+          const result = findCategory(value.subcategories, linea, grupo);
+          if (result) return `${key} > ${result}`;
+        }
+      }
+      return null;
+    };
+
+    const categoria = findCategory(categoryMapping, producto.LINEA, producto.GRUPO);
+    return categoria || "Otros";
+  };
+
   const loadProductos = useCallback(async () => {
     try {
-      // Intenta obtener el archivo CSV desde el directorio de datos públicos
       const response = await fetch("/data/inventario.csv");
       if (!response.ok) throw new Error("Network response was not ok");
 
-      // Convierte el buffer de datos en texto para ser analizado
       const buffer = await response.arrayBuffer();
-      const csvText = new TextDecoder('windows-1252').decode(buffer); // Decodificación adecuada según el archivo
+      const csvText = new TextDecoder('windows-1252').decode(buffer);
 
-      // Usa PapaParse para analizar el CSV en un formato de array de objetos
       Papa.parse(csvText, {
         header: true,
         skipEmptyLines: true,
         complete: (results) => {
-          // Mapea los datos del CSV a un formato estandarizado de producto
           const parsedProductos = results.data
-            .filter(item => item.DETALLE && item.PRECIO) // Filtra los productos válidos
-            .map(item => ({
-              id: item.CODIGO || Math.random().toString(36).substr(2, 9), // Genera un ID único si no existe
-              nombre: item.DETALLE,
-              stock: item.STOCK || "0",
-              precio: item.PRECIO,
-              LINEA: item.LINEA || "Sin LINEA",
-              GRUPO: item.GRUPO || "Sin GRUPO",
-              image: getPlaceholderImage(item.CODIGO || Math.random().toString(36).substr(2, 9)), // Asigna una imagen placeholder
-            }));
-          setProductos(parsedProductos); // Actualiza el estado con los productos analizados
-          setIsLoading(false); // Indica que la carga ha terminado
+            .filter(item => item.DETALLE && item.PRECIO)
+            .map(item => {
+              const categoria = mapCategorias(item);
+              return {
+                id: item.CODIGO || Math.random().toString(36).substr(2, 9),
+                nombre: item.DETALLE,
+                stock: item.STOCK || "0",
+                precio: item.PRECIO,
+                categoria, // Asignamos la nueva categoría
+                LINEA: item.LINEA || "Sin LINEA",
+                GRUPO: item.GRUPO || "Sin GRUPO",
+                image: getPlaceholderImage(item.CODIGO || Math.random().toString(36).substr(2, 9)),
+              };
+            });
+          setProductos(parsedProductos);
+          setIsLoading(false);
         },
         error: (err) => {
           console.error("Error parsing CSV:", err);
-          setError("Hubo un problema al parsear los productos."); // Guarda el mensaje de error
+          setError("Hubo un problema al parsear los productos.");
           setIsLoading(false);
         },
       });
     } catch (err) {
       console.error("Error al cargar el archivo CSV:", err);
-      setError("Hubo un problema al cargar los productos."); // Guarda un mensaje de error de carga
+      setError("Hubo un problema al cargar los productos.");
       setIsLoading(false);
     }
   }, []);
 
-  // Ejecuta loadProductos cuando se monta el hook para cargar los productos
   useEffect(() => {
     loadProductos();
   }, [loadProductos]);
 
-  // Devuelve los productos, el estado de carga y los mensajes de error para usarse en el componente
   return { productos, isLoading, error };
 };
