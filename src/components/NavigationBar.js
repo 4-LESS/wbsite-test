@@ -10,20 +10,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faShoppingCart, faBars } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "../components/SearchBar";
 import ModalSucursales from './ModalSucursales';
+import DropdownMenu from './DropDownMenu'; // Importamos el nuevo componente
 
 function NavigationBar() {
-  // Estado del modal de sucursales y término de búsqueda
   const [showSucursales, setShowSucursales] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");  // Estado para el término de búsqueda
   
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Abre y cierra el modal de sucursales
   const handleOpenSucursales = () => setShowSucursales(true);
   const handleCloseSucursales = () => setShowSucursales(false);
 
-  // Maneja la búsqueda: guarda el término y redirige a la página de productos con el término de búsqueda en la URL
   const handleSearchSubmit = (termino) => {
     if (termino) {
       setSearchTerm(termino); // Guardar el término de búsqueda en el estado
@@ -31,12 +29,10 @@ function NavigationBar() {
     }
   };
 
-  // Restablece el campo de búsqueda al cambiar de ruta
   useEffect(() => {
     setSearchTerm(""); // Limpiar el término de búsqueda
   }, [location.pathname]);
 
-  // Elimina el término de búsqueda de la URL si no estamos en la página de productos
   useEffect(() => {
     if (!location.pathname.startsWith("/productos")) {
       const params = new URLSearchParams(location.search);
@@ -73,12 +69,7 @@ function NavigationBar() {
                 <span className="ms-2 text-secondary">Menú</span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to="/productos">Productos</Dropdown.Item>
-                <Dropdown.Divider />
-                {/* Cada elemento del menú redirige a una categoría específica de productos */}
-                <Dropdown.Item as={Link} to="/productos?categoria=cosmetica">Cosmética</Dropdown.Item>
-                <Dropdown.Item as={Link} to="/productos?categoria=bebe">Cuidado de bebé</Dropdown.Item>
-                <Dropdown.Item as={Link} to="/productos?categoria=medicamentos">Medicamentos</Dropdown.Item>
+                <DropdownMenu /> {/* Utilizamos el nuevo componente */}
               </Dropdown.Menu>
             </Dropdown>
           </div>
