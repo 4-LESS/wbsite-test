@@ -1,31 +1,24 @@
 // src/hooks/useProductos.js
 
-// Hook personalizado para cargar datos de productos desde un archivo CSV en la carpeta public/data.
-// Utiliza PapaParse para analizar el CSV y devuelve un array de productos, estado de carga y manejo de errores.
+// Hook para cargar productos desde un archivo CSV y asignar categorías dinámicamente.
 
 import { useState, useEffect, useCallback } from "react";
 import Papa from "papaparse";
 import { getPlaceholderImage } from "../utils/helpers";
-import { categoryMapping } from "../data/categoryMapping"; // Importa el mapeo de categorías
+import { categoryMapping } from "../data/categoryMapping";
 
 export const useProductos = () => {
   const [productos, setProductos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Función para mapear las categorías antiguas a las nuevas
+  // Asigna categorías basándose en el mapeo y datos del producto.
   const mapCategorias = (producto) => {
     const findCategory = (mapping, linea, grupo) => {
       for (const [key, value] of Object.entries(mapping)) {
-        if (value.codes && value.codes.includes(producto.CODIGO)) {
-          return key;
-        }
-        if (value.lineas && value.lineas.includes(linea)) {
-          return key;
-        }
-        if (value.grupos && value.grupos.includes(grupo)) {
-          return key;
-        }
+        if (value.codes?.includes(producto.CODIGO)) return key;
+        if (value.lineas?.includes(linea)) return key;
+        if (value.grupos?.includes(grupo)) return key;
         if (value.subcategories) {
           const result = findCategory(value.subcategories, linea, grupo);
           if (result) return `${key} > ${result}`;
@@ -33,11 +26,10 @@ export const useProductos = () => {
       }
       return null;
     };
-
-    const categoria = findCategory(categoryMapping, producto.LINEA, producto.GRUPO);
-    return categoria || "Otros";
+    return findCategory(categoryMapping, producto.LINEA, producto.GRUPO) || "Otros";
   };
 
+  // Carga y procesa el archivo CSV.
   const loadProductos = useCallback(async () => {
     try {
       const response = await fetch("/data/inventario.csv");
@@ -52,19 +44,16 @@ export const useProductos = () => {
         complete: (results) => {
           const parsedProductos = results.data
             .filter(item => item.DETALLE && item.PRECIO)
-            .map(item => {
-              const categoria = mapCategorias(item);
-              return {
-                id: item.CODIGO || Math.random().toString(36).substr(2, 9),
-                nombre: item.DETALLE,
-                stock: item.STOCK || "0",
-                precio: item.PRECIO,
-                categoria, // Asignamos la nueva categoría
-                LINEA: item.LINEA || "Sin LINEA",
-                GRUPO: item.GRUPO || "Sin GRUPO",
-                image: getPlaceholderImage(item.CODIGO || Math.random().toString(36).substr(2, 9)),
-              };
-            });
+            .map(item => ({
+              id: item.CODIGO || Math.random().toString(36).substr(2, 9),
+              nombre: item.DETALLE,
+              stock: item.STOCK || "0",
+              precio: item.PRECIO,
+              categoria: mapCategorias(item),
+              LINEA: item.LINEA || "Sin LINEA",
+              GRUPO: item.GRUPO || "Sin GRUPO",
+              image: getPlaceholderImage(item.CODIGO || Math.random().toString(36).substr(2, 9)),
+            }));
           setProductos(parsedProductos);
           setIsLoading(false);
         },
