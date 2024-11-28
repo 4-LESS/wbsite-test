@@ -4,7 +4,8 @@
 // Utiliza react-bootstrap para el diseño y muestra un número específico de productos por página (ITEMS_PER_PAGE).
 
 import React, { useMemo } from "react";
-import { Row, Col, Card, Button } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import PaginationComponent from "./PaginationComponent";
 
 // Número máximo de productos que se muestran por página
@@ -44,7 +45,9 @@ const PaginatedProducts = ({ productos, currentPage, onPageChange }) => {
                 {/* Precio del producto */}
                 <Card.Text>Precio: ${precio}</Card.Text>
                 {/* Botón para ver más detalles del producto */}
-                <Button variant="primary">Ver detalles</Button>
+                <Link to={`/producto/${id}`} className="btn btn-primary">
+                  Ver detalles
+                </Link>
               </Card.Body>
             </Card>
           </Col>
@@ -61,3 +64,4 @@ const PaginatedProducts = ({ productos, currentPage, onPageChange }) => {
 };
 
 export default PaginatedProducts;
+
