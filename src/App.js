@@ -13,6 +13,8 @@ import ProductDetails from "./components/ProductDetails"; // Importa el componen
 import SobreNosotros from "./pages/SobreNosotros";
 import Contacto from "./pages/Contacto";
 import ScrollToTop from "./components/ScrollToTop";
+import Farmacia1 from "./pages/Farmacia1"; 
+import Farmacia2 from "./pages/Farmacia2";
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
             <Route path="/producto/:productId" element={<ProductDetails />} /> {/* Detalles del producto */}
             <Route path="/sobre-nosotros" element={<SobreNosotros />} /> {/* Página de información sobre la empresa */}
             <Route path="/contacto" element={<Contacto />} /> {/* Página de contacto */}
+            {/* Rutas de las sucursales */}
+            <Route path="/farmacia1" element={<Farmacia1 />} />
+            <Route path="/farmacia2" element={<Farmacia2 />} />
           </Routes>
         </div>
 
