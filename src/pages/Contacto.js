@@ -1,26 +1,31 @@
 // src/pages/Contacto.js
 
 // Componente de formulario de contacto que permite a los usuarios enviar su nombre, correo electrónico y un mensaje.
-// Incluye validación de formulario y un iframe para mostrar la ubicación en Google Maps.
+// Incluye validación de formulario
 
 import React, { useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Alert } from "react-bootstrap";
 
 function Contacto() {
   const [validated, setValidated] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
 
   const manejarSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    event.preventDefault(); // Evita que el formulario envíe datos
+    event.stopPropagation(); // Detiene cualquier propagación adicional
     setValidated(true);
+    setShowMessage(true); // Muestra el mensaje 
   };
 
   return (
     <Container className="my-4">
       <h1>Contacto</h1>
+      {showMessage && (
+        <Alert variant="info" onClose={() => setShowMessage(false)} dismissible>
+          ¡Ups! El programador aún no ha implementado esta función
+        </Alert>
+      )}
+
       <Form noValidate validated={validated} onSubmit={manejarSubmit}>
         <Form.Group controlId="formNombre">
           <Form.Label>Nombre</Form.Label>
@@ -50,25 +55,15 @@ function Contacto() {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Button variant="primary" type="submit" className="mt-3">
+        {/* Botón de enviar */}
+        <Button
+          variant="primary"
+          type="submit"
+          className="mt-3"
+        >
           Enviar
         </Button>
       </Form>
-
-      <div className="mt-5">
-        <h2>Nuestra Ubicación</h2>
-        {/* Iframe de Google Maps para mostrar la ubicación */}
-        <iframe
-          title="mapa"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15139.062095199743!2d-70.31022011284178!3d-18.448952299999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915aa902546dba17%3A0xf9869fb3c39f89a5!2sFarmacia%20FarmAhorro!5e0!3m2!1ses!2scl!4v1731183974290!5m2!1ses!2scl"
-          width="100%"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
-      </div>
     </Container>
   );
 }
