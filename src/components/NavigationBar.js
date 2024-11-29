@@ -2,16 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faShoppingCart, faBars } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "../components/SearchBar";
 import ModalSucursales from "./ModalSucursales";
 import UserMenu from "./UserMenu"; // Importa el nuevo componente
+import { CSSTransition } from "react-transition-group";
+import "../styles/SharedMenuStyles.scss"; // Estilos compartidos
 
 function NavigationBar() {
   const [showSucursales, setShowSucursales] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [menuVisible, setMenuVisible] = useState(false); // Controla si el menú es visible
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,6 +26,10 @@ function NavigationBar() {
       setSearchTerm(termino);
       navigate(`/productos?search=${encodeURIComponent(termino)}`);
     }
+  };
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
   };
 
   useEffect(() => {
@@ -55,21 +62,37 @@ function NavigationBar() {
                 style={{ width: "150px", marginRight: "30px" }}
               />
             </Link>
-            <Dropdown>
-              <Dropdown.Toggle as="div" className="d-flex align-items-center mx-3">
-                <div className="menu-circle d-flex align-items-center justify-content-center">
+            <div className="navigation-menu">
+              <div className="menu-toggle" onClick={toggleMenu}>
+                <div className="menu-circle">
                   <FontAwesomeIcon icon={faBars} className="text-white" style={{ fontSize: "20px" }} />
                 </div>
                 <span className="ms-2 text-secondary">Menú</span>
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item as={Link} to="/productos">Productos</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item as={Link} to="/productos?categoria=cosmetica">Cosmética</Dropdown.Item>
-                <Dropdown.Item as={Link} to="/productos?categoria=bebe">Cuidado de bebé</Dropdown.Item>
-                <Dropdown.Item as={Link} to="/productos?categoria=medicamentos">Medicamentos</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+              </div>
+
+              <CSSTransition
+                in={menuVisible}
+                timeout={300}
+                classNames="dropdown"
+                unmountOnExit
+              >
+                <div className="navigation-dropdown">
+                  <div className="dropdown-item" onClick={toggleMenu}>
+                    <Link to="/productos">Productos</Link>
+                  </div>
+                  <div className="dropdown-divider" />
+                  <div className="dropdown-item" onClick={toggleMenu}>
+                    <Link to="/productos?categoria=cosmetica">Cosmética</Link>
+                  </div>
+                  <div className="dropdown-item" onClick={toggleMenu}>
+                    <Link to="/productos?categoria=bebe">Cuidado de bebé</Link>
+                  </div>
+                  <div className="dropdown-item" onClick={toggleMenu}>
+                    <Link to="/productos?categoria=medicamentos">Medicamentos</Link>
+                  </div>
+                </div>
+              </CSSTransition>
+            </div>
           </div>
           <div className="mx-3" style={{ flexGrow: 1 }}>
             <SearchBar onSearchSubmit={handleSearchSubmit} defaultValue={searchTerm} />
@@ -108,3 +131,4 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
+

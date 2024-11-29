@@ -221,3 +221,20 @@ h2, h3, h4, h5, h6 {
   border-radius: 0 20px 20px 0;
 }
 
+#dropdown-user {
+  background-color: transparent !important; /* Fondo transparente */
+  border: none !important; /* Sin borde */
+  box-shadow: none !important; /* Elimina cualquier sombra */
+  padding: 0; /* Ajusta el padding si es necesario */
+}
+
+/* Cambiar el hover del botón para que sea consistente */
+#dropdown-user:hover {
+  background-color: transparent !important; /* Mantén el fondo transparente al hacer hover */
+  color: var(--secondary-color) !important; /* Asegura que el ícono se mantenga naranja */
+}
+
+/* Cambia el ícono para ser consistente */
+#dropdown-user .text-secondary {
+  color: var(--secondary-color) !important; /* Usando el esquema de color naranja */
+}

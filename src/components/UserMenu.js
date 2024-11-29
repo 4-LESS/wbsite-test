@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
+import { Link } from "react-router-dom"; // Importa el componente Link
+import "../styles/SharedMenuStyles.scss"; // Estilos compartidos
 
 function UserMenu() {
   const { loginWithRedirect, logout, isAuthenticated, isLoading, getIdTokenClaims } = useAuth0();
   const [userRole, setUserRole] = useState(null); // 'admin' o 'client'
+  const [menuVisible, setMenuVisible] = useState(false); // Controla si el menú es visible
 
   useEffect(() => {
     const fetchRoles = async () => {
       if (isAuthenticated) {
         try {
           const claims = await getIdTokenClaims();
-          console.log("Claims obtenidas:", claims); // Verifica dónde están los roles
-          const roles = claims?.["https://farmahorro.com/roles"] || []; // Cambia a la clave correcta
-          console.log("Roles obtenidos:", roles); // Depuración
+          const roles = claims?.["https://farmahorro.com/roles"] || [];
           if (roles.includes("admin")) {
             setUserRole("admin");
           } else if (roles.includes("client")) {
@@ -33,55 +33,66 @@ function UserMenu() {
     fetchRoles();
   }, [isAuthenticated, getIdTokenClaims]);
 
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
   if (isLoading) {
     return (
-      <Dropdown align="end" className="ms-3">
-        <Dropdown.Toggle id="dropdown-user" style={{ cursor: "pointer" }}>
+      <div className="user-menu">
+        <div className="user-menu-icon">
           <FontAwesomeIcon icon={faUser} size="lg" className="text-secondary" />
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item disabled>Cargando...</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+        </div>
+      </div>
     );
   }
 
   if (!isAuthenticated) {
     return (
-      <Dropdown align="end" className="ms-3">
-        <Dropdown.Toggle id="dropdown-user" style={{ cursor: "pointer" }}>
+      <div className="user-menu">
+        <div className="user-menu-icon" onClick={() => loginWithRedirect()}>
           <FontAwesomeIcon icon={faUser} size="lg" className="text-secondary" />
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={() => loginWithRedirect()}>Iniciar Sesión</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Dropdown align="end" className="ms-3">
-      <Dropdown.Toggle id="dropdown-user" style={{ cursor: "pointer" }}>
+    <div className="user-menu">
+      <div className="user-menu-icon" onClick={toggleMenu}>
         <FontAwesomeIcon icon={faUser} size="lg" className="text-secondary" />
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        {userRole === "admin" && (
-          <Dropdown.Item as={Link} to="/admin">Panel de Administración</Dropdown.Item>
-        )}
-        {userRole === "client" && (
-          <Dropdown.Item as={Link} to="/user-dashboard">Mi Cuenta</Dropdown.Item>
-        )}
-        <Dropdown.Item
-          onClick={() =>
-            logout({ logoutParams: { returnTo: window.location.origin } })
-          }
-        >
-          Cerrar Sesión
-        </Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+      </div>
+
+      <CSSTransition
+        in={menuVisible}
+        timeout={300}
+        classNames="dropdown"
+        unmountOnExit
+      >
+        <div className="user-menu-dropdown">
+          {userRole === "admin" && (
+            <div className="dropdown-item" onClick={() => setMenuVisible(false)}>
+              <Link to="/admin">Panel de Administración</Link>
+            </div>
+          )}
+          {userRole === "client" && (
+            <div className="dropdown-item" onClick={() => setMenuVisible(false)}>
+              <Link to="/user-dashboard">Mi Cuenta</Link>
+            </div>
+          )}
+          <div
+            className="dropdown-item"
+            onClick={() => {
+              setMenuVisible(false);
+              logout({ logoutParams: { returnTo: window.location.origin } });
+            }}
+          >
+            Cerrar Sesión
+          </div>
+        </div>
+      </CSSTransition>
+    </div>
   );
 }
 
 export default UserMenu;
-
