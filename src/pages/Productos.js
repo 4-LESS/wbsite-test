@@ -1,13 +1,13 @@
 // src/pages/Productos.js
 import React, { useState } from "react";
-import { Container, Button, Spinner, Alert, Card } from "react-bootstrap";
+import { Container, Button, Spinner, Alert } from "react-bootstrap";
 import { useProductos } from "../hooks/useProductos"; // Hook para cargar productos desde un archivo CSV
 import SearchBar from "../components/SearchBar"; // Barra de búsqueda
 import ProductFilters from "../components/ProductFilters"; // Filtros de productos
 import PaginatedProducts from "../components/PaginatedProducts"; // Componente de paginación
 import ProductDetails from "../components/ProductDetails"; // Detalles de un producto
 import useFilteredProducts from "../hooks/useFilteredProducts"; // Hook para aplicar filtros
-import { Routes, Route, Link } from "react-router-dom"; // Para manejar rutas
+import { Routes, Route } from "react-router-dom"; // Para manejar rutas
 
 const Productos = () => {
   // Estado y lógica para cargar productos

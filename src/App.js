@@ -3,30 +3,47 @@
 // Incluye una barra de navegación, contenido principal con rutas, botón para volver al inicio de la página, y el pie de página.
 
 
+// src/App.js
+
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import { CarritoProvider } from "./components/CarritoContext"; // Importa el proveedor
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
 import Inicio from "./pages/Inicio";
 import Productos from "./pages/Productos";
-import ProductDetails from "./components/ProductDetails"; // Importa el componente detalles del producto
+import ProductDetails from "./components/ProductDetails";
 import SobreNosotros from "./pages/SobreNosotros";
 import Contacto from "./pages/Contacto";
 import ScrollToTop from "./components/ScrollToTop";
-import Farmacia1 from "./pages/Farmacia1"; 
+import Farmacia1 from "./pages/Farmacia1";
 import Farmacia2 from "./pages/Farmacia2";
+import AdminDashboard from "./pages/AdminDashboard";
+import ClientDashboard from "./pages/ClientDashboard";
 import Carrito from "./pages/Carrito";
 
 function App() {
+  const { isAuthenticated, getIdTokenClaims } = useAuth0();
+  const [isAdmin, setIsAdmin] = React.useState(false);
+
+  React.useEffect(() => {
+    const fetchRoles = async () => {
+      if (isAuthenticated) {
+        const claims = await getIdTokenClaims();
+        const roles = claims?.["https://farmahorro.com/roles"] || [];
+        setIsAdmin(roles.includes("admin"));
+      }
+    };
+
+    fetchRoles();
+  }, [isAuthenticated, getIdTokenClaims]);
+
   return (
     <Router>
       <CarritoProvider> {/* Proveedor envuelve la aplicación */}
       <div className="d-flex flex-column min-vh-100">
-        {/* Barra de navegación fija en la parte superior de la aplicación */}
         <NavigationBar />
-
-        {/* Contenedor del contenido principal, con enrutamiento para cada página */}
         <div className="flex-grow-1">
           <Routes>
             {/* Rutas para cada página de la aplicación */}
@@ -39,13 +56,12 @@ function App() {
             {/* Rutas de las sucursales */}
             <Route path="/farmacia1" element={<Farmacia1 />} />
             <Route path="/farmacia2" element={<Farmacia2 />} />
-            
+            <Route path="/admin" element={isAdmin ? <AdminDashboard /> : <Navigate to="/" />} />
+            <Route path="/user-dashboard" element={isAuthenticated ? <ClientDashboard /> : <Navigate to="/" />} />
           </Routes>
         </div>
-
-        {/* Componente para volver al inicio de la página al hacer scroll y pie de página */}
-        <ScrollToTop /> {/* Botón para volver al inicio al hacer scroll */}
-        <Footer /> {/* Pie de página con información adicional */}
+        <ScrollToTop />
+        <Footer />
       </div>
       </CarritoProvider>
     </Router>
