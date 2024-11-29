@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useProductos } from "../hooks/useProductos"; // Importa el hook para cargar los productos
+import { useCarrito } from "../components/CarritoContext"; // Contexto del carrito
 import { Container, Row, Col, Button, Badge, Spinner } from "react-bootstrap";
 
 const ProductDetails = () => {
   const { productId } = useParams(); // Obtiene el ID del producto desde la URL
   const { productos, isLoading, error } = useProductos(); // Usa el hook para cargar los productos
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState(null); // Estado para el producto actual
+  const { agregarAlCarrito } = useCarrito(); // Función para agregar al carrito
 
-  useEffect(() => {
+  useEffect(() => { 
+    // Carga el producto específico basado en el ID
     if (!isLoading && productos.length > 0) {
       // Busca el producto por su ID
       const foundProduct = productos.find((item) => item.id === productId);
@@ -47,6 +50,16 @@ const ProductDetails = () => {
       </Container>
     );
   }
+  // Maneja la acción de agregar a la bolsa
+  const handleAgregarBolsa = () => {
+    agregarAlCarrito(product);
+  };
+
+  // Maneja la acción de "comprar ahora" y redirige al carrito
+  const handleComprarAhora = () => {
+    agregarAlCarrito(product);
+    window.location.href = "/carrito";
+  };
 
   return (
     <Container className="my-5">
@@ -70,12 +83,25 @@ const ProductDetails = () => {
             Oferta
           </Badge>
 
+           {/* Mostrar stock y alerta si es bajo */}
+           <p>
+            <strong>Stock:</strong> {product.stock}{" "}
+            {product.stock <= 3 && (
+              <span className="pocas-unidades">¡Quedan pocas unidades!</span>
+            )}
+           </p>
+
           {/* Opciones de compra */}
           <div className="my-4">
-            <Button variant="success" size="lg" className="me-2">
+          <Button
+              variant="success"
+              size="lg"
+              className="me-2"
+              onClick={handleAgregarBolsa}
+            >
               Agregar a la bolsa
             </Button>
-            <Button variant="outline-secondary" size="lg">
+            <Button variant="outline-secondary" size="lg" onClick={handleComprarAhora}>
               Comprar ahora
             </Button>
           </div>
@@ -107,5 +133,3 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
-
-

@@ -1,24 +1,27 @@
 // src/App.js
 // Componente principal de la aplicación, que configura el enrutamiento y estructura de la página.
 // Incluye una barra de navegación, contenido principal con rutas, botón para volver al inicio de la página, y el pie de página.
-// Se añade el carrito :P
+
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { CarritoProvider } from "./components/CarritoContext"; // Importa el proveedor
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
 import Inicio from "./pages/Inicio";
 import Productos from "./pages/Productos";
-import ProductDetails from "./components/ProductDetails"; // Importa el componente de detalles
+import ProductDetails from "./components/ProductDetails"; // Importa el componente detalles del producto
 import SobreNosotros from "./pages/SobreNosotros";
 import Contacto from "./pages/Contacto";
 import ScrollToTop from "./components/ScrollToTop";
 import Farmacia1 from "./pages/Farmacia1"; 
 import Farmacia2 from "./pages/Farmacia2";
+import Carrito from "./pages/Carrito";
 
 function App() {
   return (
     <Router>
+      <CarritoProvider> {/* Proveedor envuelve la aplicación */}
       <div className="d-flex flex-column min-vh-100">
         {/* Barra de navegación fija en la parte superior de la aplicación */}
         <NavigationBar />
@@ -32,9 +35,11 @@ function App() {
             <Route path="/producto/:productId" element={<ProductDetails />} /> {/* Detalles del producto */}
             <Route path="/sobre-nosotros" element={<SobreNosotros />} /> {/* Página de información sobre la empresa */}
             <Route path="/contacto" element={<Contacto />} /> {/* Página de contacto */}
+            <Route path="/carrito" element={<Carrito />} />
             {/* Rutas de las sucursales */}
             <Route path="/farmacia1" element={<Farmacia1 />} />
             <Route path="/farmacia2" element={<Farmacia2 />} />
+            
           </Routes>
         </div>
 
@@ -42,9 +47,9 @@ function App() {
         <ScrollToTop /> {/* Botón para volver al inicio al hacer scroll */}
         <Footer /> {/* Pie de página con información adicional */}
       </div>
+      </CarritoProvider>
     </Router>
   );
 }
 
 export default App;
-
