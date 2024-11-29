@@ -221,3 +221,42 @@ h2, h3, h4, h5, h6 {
   border-radius: 0 20px 20px 0;
 }
 
+.carrito-icon-container {
+  position: relative; // Permite posicionar el badge relativo al ícono
+  display: inline-block;
+}
+
+.carrito-badge {
+  position: absolute;
+  top: -5px; // Ajusta la posición vertical
+  right: -10px; // Ajusta la posición horizontal
+  background-color: red;
+  color: white;
+  border-radius: 50%; // Hace que el badge sea circular
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  min-width: 18px;
+  text-align: center;
+}
+
+.card-img-top-custom {
+  height: 200px;
+  object-fit: cover;
+}
+
+.pocas-unidades {
+  background-color: red;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+button:disabled {
+  background-color: gray !important;
+  cursor: not-allowed;
+}
