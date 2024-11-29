@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faShoppingCart, faBars } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "../components/SearchBar";
 import ModalSucursales from './ModalSucursales';
+import CarritoIcon from "./CarritoIcon"; 
 
 function NavigationBar() {
   // Estado del modal de sucursales y término de búsqueda
@@ -90,9 +91,7 @@ function NavigationBar() {
           <div className="d-flex align-items-center">
             <FontAwesomeIcon icon={faMapMarkerAlt} size="lg" className="icono-sucursales" />
             <span className="button-sucursales" onClick={handleOpenSucursales}>Sucursales</span>
-            <Link to="/carrito" className="ms-3 text-secondary">
-              <FontAwesomeIcon icon={faShoppingCart} size="lg" />
-            </Link>
+            <CarritoIcon />
           </div>
         </Container>
       </div>
