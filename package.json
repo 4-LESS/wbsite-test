@@ -10,8 +10,13 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "animate.css": "^4.1.1",
-    "axios": "^1.7.7",
+    "axios": "^1.7.8",
+    "better-sqlite3": "^11.6.0",
+    "body-parser": "^1.20.3",
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
     "papaparse": "^5.4.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
@@ -20,6 +25,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.8.2",
     "sass": "^1.80.6",
+    "sqlite3": "^5.1.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
