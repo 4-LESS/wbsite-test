@@ -4,6 +4,8 @@
 // Actualmente, esta función no está siendo usada debido a conflictos en la API que aún no se han solucionado.
 // La función utiliza axios para realizar una solicitud GET a la API especificada en el archivo de configuración.
 
+// ToT
+
 const axios = require('axios');
 const https = require('https');
 
