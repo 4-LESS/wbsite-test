@@ -276,3 +276,62 @@ button:disabled {
 #dropdown-user .text-secondary {
   color: var(--secondary-color) !important; /* Usando el esquema de color naranja */
 }}
+
+.notification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Oscurece el fondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Estilos para la notificación */
+.notification-popup {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  width: 400px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.notification-content {
+  position: relative; /* El contenedor define el contexto para el botón */
+  padding: 10px; /* Ajusta el espacio interno según sea necesario */
+}
+
+.btn-close {
+  position: absolute; /* Botón posicionado respecto al contenedor */
+  top: 10px; /* Espaciado desde la parte superior */
+  right: 10px; /* Espaciado desde la derecha */
+  width: 24px; /* Tamaño fijo */
+  height: 24px; /* Tamaño fijo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent; /* Fondo transparente */
+  border: none; /* Sin borde */
+  color: #888; /* Color del ícono */
+  cursor: pointer; /* Cursor de clic */
+  font-size: 20px; /* Tamaño de la fuente para el ícono */
+}
+
+.btn-close:hover {
+  color: #333; /* Cambia el color al hacer hover */
+  transform: scale(1.1); /* Añade un efecto de aumento */
+}
+
+.notification-popup {
+  position: relative; /* Para manejar el contenido interno */
+  background-color: white;
+  border-radius: 8px; /* Esquinas redondeadas */
+  padding: 20px; /* Espaciado interno */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Sombra */
+  max-width: 90%; /* Ajusta según el diseño */
+  width: 400px; /* Tamaño fijo */
+}
