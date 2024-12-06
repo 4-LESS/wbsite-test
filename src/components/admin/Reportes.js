@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Estadisticas from "./admin/Estadisticas"; 
+import Estadisticas from "../admin/Estadisticas"; 
 
 // Componente para estadísticas y reportes
 const Reportes = () => {
