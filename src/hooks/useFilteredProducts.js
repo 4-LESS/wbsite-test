@@ -19,8 +19,8 @@ const useFilteredProducts = (productos) => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get("search") || "";
-    const linea = params.get("linea") || "";
-    const grupo = params.get("grupo") || "";
+    const linea = params.get("line") || "";
+    const grupo = params.get("group_name") || "";
 
     setSearchTerm(search);
 

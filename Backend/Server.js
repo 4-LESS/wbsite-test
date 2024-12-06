@@ -1,12 +1,13 @@
 const express = require('express');
-const Database = require('better-sqlite3'); // Cliente para SQLite
+const path = require('path');
+const Database = require('better-sqlite3'); // SQLite client
 
 const app = express();
 
-// Conectar a la base de datos
+// Connect to SQLite database
 const db = new Database('./database.db');
 
-// Crear tabla de inventario si no existe
+// Create "inventory" table if it doesn't exist
 db.prepare(`
     CREATE TABLE IF NOT EXISTS inventory (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,14 +19,13 @@ db.prepare(`
     )
 `).run();
 
-// Insertar productos de prueba si la tabla está vacía
+// Insert initial products if the table is empty
 const initialProducts = [
     { name: "Paracetamol 500mg", description: "Analgésico y antipirético", price: 10.5, quantity: 100, category: "Medicamentos" },
     { name: "Ibuprofeno 200mg", description: "Anti-inflamatorio", price: 15.0, quantity: 50, category: "Medicamentos" },
     { name: "Alcohol en gel 70%", description: "Desinfectante de manos", price: 25.0, quantity: 200, category: "Higiene" }
 ];
 
-// Verificar si ya existen productos en la tabla
 const productExists = db.prepare('SELECT COUNT(*) AS count FROM inventory').get().count === 0;
 
 if (productExists) {
@@ -44,17 +44,21 @@ if (productExists) {
     console.log("Productos de prueba insertados en la base de datos.");
 }
 
+// Middleware to parse JSON requests
 app.use(express.json());
 
-// Rutas
+// Serve static files from the "build" directory
+app.use(express.static(path.join(__dirname, 'build')));
 
-// Obtener todos los productos
+// API Routes
+
+// Get all products
 app.get('/api/inventory', (req, res) => {
     const inventory = db.prepare('SELECT * FROM inventory').all();
     res.json(inventory);
 });
 
-// Obtener un producto por ID
+// Get a product by ID
 app.get('/api/inventory/:id', (req, res) => {
     const product = db.prepare('SELECT * FROM inventory WHERE id = ?').get(req.params.id);
     if (product) {
@@ -64,7 +68,7 @@ app.get('/api/inventory/:id', (req, res) => {
     }
 });
 
-// Insertar un nuevo producto
+// Insert a new product
 app.post('/api/inventory', (req, res) => {
     const { name, description, price, quantity, category } = req.body;
     const result = db.prepare(`
@@ -75,8 +79,13 @@ app.post('/api/inventory', (req, res) => {
     res.status(201).json({ success: true, id: result.lastInsertRowid });
 });
 
-// Configuración del servidor
-const PORT = 3000;
+// Catch-all route to serve React app for non-API routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
