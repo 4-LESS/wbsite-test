@@ -1,11 +1,12 @@
 // src/pages/Inicio.js
-
-import React, { useState, useEffect } from "react"; // Importamos useState y useEffect
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPills, faUserMd, faTruck, faTimes } from "@fortawesome/free-solid-svg-icons"; // Añadimos faTimes para el botón de cerrar
-import Anuncios from "../components/Anuncios"; // Componente de carrusel de anuncios para promociones o novedades
-import "../styles/custom.scss"; // Asegúrate de tener estilos para la notificación
+import { faPills, faUserMd, faTruck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import Anuncios from "../components/Anuncios";
+import Destacados from "../components/Destacados"; // Importa el nuevo componente
+import heroImage from "../assets/images/hero.png";
+import "../styles/custom.scss"; 
 
 function Inicio() {
   const [activeNotification, setActiveNotification] = useState(null);
@@ -18,16 +19,14 @@ function Inicio() {
     }
   }, []);
 
-  // Función para cerrar la notificación emergente
   const closeNotification = () => {
     setActiveNotification(null);
   };
 
   return (
     <>
-      {/* Notificación emergente si hay alguna activa */}
       {activeNotification && (
-        <div className="notification-overlay">
+        <div className="notification-overlay" style={{ fontFamily: 'Montserrat, sans-serif' }}>
           <div className="notification-popup">
             <div className="notification-content">
               <p>{activeNotification.message}</p>
@@ -39,72 +38,113 @@ function Inicio() {
         </div>
       )}
 
-      {/* Contenedor para el carrusel de anuncios */}
-      <Container className="my-5">
-        <Anuncios /> {/* Componente de carrusel para mostrar anuncios promocionales */}
-      </Container>
-
-      {/* Sección de bienvenida con fondo primario y texto blanco */}
-      <div className="bg-primary text-white text-center py-5">
+      {/* Hero Section: Mensaje de bienvenida */}
+      <div 
+        className="hero-section" 
+        style={{
+          fontFamily: 'Montserrat, sans-serif',
+          minHeight: '60vh',
+          padding: '80px 0',
+          backgroundColor: '#fff',
+        }}
+      >
         <Container>
-          <Row className="justify-content-center">
-            <Col md={8}>
-              {/* Título de bienvenida con animación de entrada */}
-              <h1
-                className="animate__animated animate__fadeInDown"
-                style={{ fontFamily: "Roboto, sans-serif" }}
-              >
+          <Row className="align-items-center">
+            <Col md={6} className="mb-4 mb-md-0" data-aos="fade-right">
+              <h1 style={{ fontWeight: '600', fontSize: '2.5rem', color: '#2954a3' }}>
                 Bienvenido a FarmAhorro
               </h1>
-              {/* Subtítulo que enfatiza el enfoque en la salud del cliente */}
-              <p
-                className="lead animate__animated animate__fadeInUp"
-                style={{ fontFamily: "Roboto, sans-serif" }}
-              >
+              <p style={{ fontWeight: '300', fontSize: '1.1rem', color: '#333', marginTop: '20px' }}>
                 Tu salud es nuestra prioridad
               </p>
+            </Col>
+            <Col md={6} className="text-center" data-aos="fade-left">
+              <img 
+                src={heroImage} 
+                alt="Salud e higiene" 
+                style={{ maxWidth: '100%', height: 'auto' }} 
+              />
             </Col>
           </Row>
         </Container>
       </div>
 
-      {/* Sección de características de los servicios de la farmacia */}
-      <Container className="my-5">
+      {/* Sección de anuncios */}
+      <Container className="my-5" style={{ fontFamily: 'Montserrat, sans-serif' }} data-aos="fade-up">
+        <Anuncios />
+      </Container>
+
+      {/* Sección de productos destacados (ahora en un componente aparte) */}
+      <Destacados />
+
+      {/* Sección de características/servicios */}
+      <Container className="my-5" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+        <h2 className="text-center mb-5" style={{ fontWeight: '600', color: '#333' }} data-aos="fade-up">
+          Nuestros Servicios
+        </h2>
         <Row className="text-center">
-          {/* Característica: Variedad de productos */}
-          <Col md={4} className="mb-4">
-            <FontAwesomeIcon
-              icon={faPills}
-              size="3x"
-              className="mb-3 text-secondary"
-            />
-            <h3>Variedad</h3>
-            <p>Amplia gama de productos farmacéuticos.</p>
+          <Col md={4} className="mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div 
+              className="feature-card p-4 h-100" 
+              style={{ 
+                borderRadius: '10px', 
+                background: '#fff', 
+                boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+              }}
+            >
+              <FontAwesomeIcon icon={faPills} size="3x" className="mb-3" style={{ color: '#2954a3' }} />
+              <h3 style={{ fontWeight: '500', color: '#333' }}>Variedad</h3>
+              <p style={{ fontWeight: '300', fontSize: '0.95rem', color: '#555' }}>
+                Amplia gama de productos farmacéuticos.
+              </p>
+            </div>
           </Col>
 
-          {/* Característica: Profesionales capacitados */}
-          <Col md={4} className="mb-4">
-            <FontAwesomeIcon
-              icon={faUserMd}
-              size="3x"
-              className="mb-3 text-secondary"
-            />
-            <h3>Profesionales</h3>
-            <p>Atención personalizada por expertos.</p>
+          <Col md={4} className="mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div 
+              className="feature-card p-4 h-100" 
+              style={{ 
+                borderRadius: '10px', 
+                background: '#fff', 
+                boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+              }}
+            >
+              <FontAwesomeIcon icon={faUserMd} size="3x" className="mb-3" style={{ color: '#2954a3' }} />
+              <h3 style={{ fontWeight: '500', color: '#333' }}>Profesionales</h3>
+              <p style={{ fontWeight: '300', fontSize: '0.95rem', color: '#555' }}>
+                Atención personalizada por expertos.
+              </p>
+            </div>
           </Col>
 
-          {/* Característica: Envío a domicilio */}
-          <Col md={4} className="mb-4">
-            <FontAwesomeIcon
-              icon={faTruck}
-              size="3x"
-              className="mb-3 text-secondary"
-            />
-            <h3>Envíos</h3>
-            <p>Servicio de entrega a domicilio rápido y seguro.</p>
+          <Col md={4} className="mb-4" data-aos="fade-up" data-aos-delay="300">
+            <div 
+              className="feature-card p-4 h-100" 
+              style={{ 
+                borderRadius: '10px', 
+                background: '#fff', 
+                boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+              }}
+            >
+              <FontAwesomeIcon icon={faTruck} size="3x" className="mb-3" style={{ color: '#2954a3' }} />
+              <h3 style={{ fontWeight: '500', color: '#333' }}>Envíos</h3>
+              <p style={{ fontWeight: '300', fontSize: '0.95rem', color: '#555' }}>
+                Entrega a domicilio rápida y segura.
+              </p>
+            </div>
           </Col>
         </Row>
       </Container>
+
+      <style jsx>{`
+        .feature-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+      `}</style>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import "../styles/ClientDashboard.scss";
 import { useAuth0 } from "@auth0/auth0-react";
+
+import "../styles/userStyles.scss"; // Archivo de estilos
 
 const ClientDashboard = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();

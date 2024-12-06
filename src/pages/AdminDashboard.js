@@ -7,7 +7,7 @@ import OrderManagement from "../components/admin/OrderManagement"; // Gestión d
 import AdminAnuncios from "../components/admin/AdminAnuncios"; // Gestión de anuncios
 import Reportes from "../components/admin/Reportes"; // Reportes y estadísticas
 
-import "../styles/AdminDashboard.scss"; // Archivo de estilos
+import "../styles/userStyles.scss"; // Archivo de estilos
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("inventario"); // Estado para la sección activa

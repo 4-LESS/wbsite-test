@@ -5,6 +5,10 @@ $dark-color: #333;
 
 @import "~bootstrap/scss/bootstrap";
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Sección de Bienvenida (modificación) */
 .bg-primary {
   background: linear-gradient($primary-color,#2954a3); /* Usando color sólido */
@@ -334,4 +338,26 @@ button:disabled {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Sombra */
   max-width: 90%; /* Ajusta según el diseño */
   width: 400px; /* Tamaño fijo */
+}
+
+.slide-enter {
+  opacity: 0;
+  transform: translateX(100px); 
+  /* La vista entra desde la derecha. Puedes aumentar el valor o cambiarlo a -100px para que entre desde la izquierda. */
+}
+.slide-enter.slide-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+.slide-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.slide-exit.slide-exit-active {
+  opacity: 0;
+  transform: translateX(-100px); 
+  /* La vista se mueve hacia la izquierda al salir. Puedes cambiar el valor o la dirección. */
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
 }

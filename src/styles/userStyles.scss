@@ -1,0 +1,242 @@
+// Variables de color
+$primary-color: #2954a3; // Azul principal
+$light-color: #f8f9fa;   // Fondo claro para la sidebar
+$background-color: #ecf0f1; // Fondo gris claro del contenido
+
+// Estilos base para toda la estructura (admin y cliente)
+.admin-dashboard,
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: $background-color;
+}
+
+// Sidebar unificada para ambos dashboards
+.admin-dashboard .admin-sidebar,
+.dashboard-container .sidebar {
+  width: 250px;
+  background-color: $light-color;
+  border-right: 1px solid #dee2e6;
+  padding: 20px;
+
+  .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      color: #333;
+      background-color: #fff;
+      border-radius: 8px;
+      transition: background-color 0.3s, color 0.3s;
+
+      &:hover {
+        background-color: $primary-color;
+        color: #fff;
+      }
+
+      &.active {
+        background-color: $primary-color;
+        color: #fff;
+      }
+    }
+  }
+}
+
+// Contenido principal
+.admin-dashboard .admin-content,
+.dashboard-container .content {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h2, h3 {
+    color: $primary-color;
+    margin-bottom: 20px;
+  }
+
+  p, ul {
+    font-size: 1rem;
+    margin: 10px 0;
+    color: #333;
+  }
+
+  // Botones
+  .btn-primary {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #ff7e1b;
+    color: white;
+
+    &:hover {
+      background-color: #e26a00;
+    }
+  }
+
+  .btn-secondary {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: $primary-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  .status {
+    &.delivered {
+      color: green;
+    }
+    &.pending {
+      color: orange;
+    }
+    &.cancelled {
+      color: red;
+    }
+  }
+
+  .dashboard-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Ajustes específicos para el Dashboard del Cliente
+.dashboard-container {
+  flex-direction: column;
+
+  .dashboard-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+
+    .user-profile-picture {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    .user-info {
+      h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        color: $primary-color;
+      }
+
+      p {
+        margin: 0;
+        color: #777;
+      }
+    }
+  }
+
+  .dashboard-content {
+    display: flex;
+    flex: 1;
+  }
+}
+
+// Ajustes específicos para el Dashboard del Admin
+.admin-dashboard .admin-content {
+  background-color: $background-color;
+
+  .admin-section {
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .dashboard-section {
+      h3 {
+        color: #34495e;
+        margin-bottom: 15px;
+      }
+
+      // Formularios de anuncios y notificaciones
+      .announcement-form,
+      .notification-form {
+        .form-group {
+          margin-bottom: 15px;
+        }
+
+        .form-control {
+          border-radius: 4px;
+        }
+
+        .btn-primary {
+          background-color: #2980b9;
+          border: none;
+
+          &:hover {
+            background-color: #1f6391;
+          }
+        }
+      }
+
+      // Listado de anuncios
+      .announcements-list {
+        .card {
+          border: none;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+          .card-img-top {
+            height: 150px;
+            object-fit: cover;
+          }
+
+          .card-body {
+            padding: 15px;
+
+            .btn-danger {
+              background-color: #e74c3c;
+              border: none;
+
+              &:hover {
+                background-color: #c0392b;
+              }
+            }
+          }
+        }
+      }
+
+      // Listado de notificaciones
+      .notifications-list {
+        .table {
+          background-color: #ffffff;
+        }
+
+        .btn-danger {
+          background-color: #e74c3c;
+          border: none;
+
+          &:hover {
+            background-color: #c0392b;
+          }
+        }
+
+        .form-check-input {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
